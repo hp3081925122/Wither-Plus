@@ -68,10 +68,10 @@ Render Preview 1.21.1 已加载实际模组着色器，17 个 VFX、发光层、
 比较数据 `D:/AI临时文件/witherplus-preview/comparison.json`，对照图 `comparison.png`。
 原版预览初次因直接使用 SRG 发布 JAR 出现 NoSuchMethodError；改用 Render Preview 已有开发类输出组成的临时开发 JAR 后成功。未修改 Render Preview 工程或原版模组源码。
 
-正式 JAR `build/libs/witherplus-1.21.1-neoforge-0.0.1.jar` 已检查无 `com/witherplus/validation` 或 Render Preview 类。
+正式 JAR `build/libs/witherplus-1.21.1-neoforge-0.0.1-beta.jar` 已检查无 `com/witherplus/validation` 或 Render Preview 类。
 
 ### 发布状态
 
 GitHub 公开仓库：https://github.com/hp3081925122/Wither-Plus
 版本分支：`1201forge` 与 `1211neoforge`，分别对应独立工作树。
-CurseForge 项目已通过内置浏览器创建，项目 ID 1749910，展示名 Wither Plus: Soul, Bone and Black Sun。项目尚待审核，未上传文件；完整信息见 publishing.md。
+CurseForge 项目已通过内置浏览器创建，项目 ID 1749910，展示名 Wither Plus: Soul, Bone and Black Sun。项目及文件尚待审核，已上传 1.20.1 Release 与 1.21.1 Beta；完整信息见 publishing.md。
