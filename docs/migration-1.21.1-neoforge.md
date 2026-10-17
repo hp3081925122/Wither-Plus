@@ -74,4 +74,4 @@ Render Preview 1.21.1 已加载实际模组着色器，17 个 VFX、发光层、
 
 GitHub 公开仓库：https://github.com/hp3081925122/Wither-Plus
 版本分支：`1201forge` 与 `1211neoforge`，分别对应独立工作树。
-CurseForge 项目创建尚未提交：名称、英文摘要、Mods / Mobs 分类已填写，必填图标被 Edge 扩展的文件 URL 访问设置阻止。需开启该能力后继续，不将草稿记为已创建项目。
+CurseForge 项目已通过内置浏览器创建，项目 ID 1749910，展示名 Wither Plus: Soul, Bone and Black Sun。项目尚待审核，未上传文件；完整信息见 publishing.md。
