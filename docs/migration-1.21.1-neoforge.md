@@ -56,3 +56,22 @@
 独立只读审查确认：12 个具体技能、7 个 hazard、17 个 VFX 均保留；配置表达式一致；5 张纹理哈希一致；4 个 shader JSON 一致；7 个 GLSL 文件统一换行后内容一致。未发现通过删减功能完成迁移的情况。
 
 Render Preview 1.21.1 已加载实际模组着色器，17 个 VFX、发光层、屏幕效果共 19 个场景成功离屏捕获，采样均有非背景像素且洋红缺失纹理比例为 0。统计与拼图分别位于 `D:/AI临时文件/witherplus-preview/results-1211.json`、`contact-1211.png`。骨刺另有近景采样。静态截图不能代替真实战斗的动态镜头与全部时间点测试。
+
+### 跨版本画面对照
+
+使用两个版本各自的 Render Preview，按同一场景参数、时间、镜头、分辨率捕获 19 组图像。
+其中 17 组平均 RGB 绝对差异小于 0.0003（每通道范围 0..255）。两组差异单列：
+
+- Scorch：平均差异 1.06675/255；源码的静态 counter 参与火舌位置和噪声 seed，两次运行的实例计数不同，截图不承诺逐像素一致。两边该 VFX 源码语义相同。
+- Glow：平均差异 0.09001/255，原模型浮点颜色参数改为目标 API 的 ARGB 整数颜色；几何与发光层保留。
+
+比较数据 `D:/AI临时文件/witherplus-preview/comparison.json`，对照图 `comparison.png`。
+原版预览初次因直接使用 SRG 发布 JAR 出现 NoSuchMethodError；改用 Render Preview 已有开发类输出组成的临时开发 JAR 后成功。未修改 Render Preview 工程或原版模组源码。
+
+正式 JAR `build/libs/witherplus-1.21.1-neoforge-0.0.1.jar` 已检查无 `com/witherplus/validation` 或 Render Preview 类。
+
+### 发布状态
+
+GitHub 公开仓库：https://github.com/hp3081925122/Wither-Plus
+版本分支：`1201forge` 与 `1211neoforge`，分别对应独立工作树。
+CurseForge 项目创建尚未提交：名称、英文摘要、Mods / Mobs 分类已填写，必填图标被 Edge 扩展的文件 URL 访问设置阻止。需开启该能力后继续，不将草稿记为已创建项目。
