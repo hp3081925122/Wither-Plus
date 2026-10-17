@@ -4,7 +4,7 @@ import com.mojang.logging.LogUtils;
 import com.witherplus.network.WpNetwork;
 import com.witherplus.wither.WitherBrain;
 import com.witherplus.wither.WitherBrainHolder;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -31,8 +31,8 @@ public final class WitherPlus {
         NeoForge.EVENT_BUS.addListener(this::onStartTracking);
     }
 
-    public static ResourceLocation id(String path) {
-        return ResourceLocation.fromNamespaceAndPath(MODID, path);
+    public static Identifier id(String path) {
+        return Identifier.fromNamespaceAndPath(MODID, path);
     }
 
     private void onStartTracking(PlayerEvent.StartTracking event) {
@@ -41,7 +41,7 @@ public final class WitherPlus {
         }
         WitherBrain brain = ((WitherBrainHolder) wither).wp$getBrain();
         if (brain.active()) {
-            LOGGER.info("Sending wither {} stage {} to {} on start tracking", wither.getId(), brain.stage(), player.getGameProfile().getName());
+            LOGGER.info("Sending wither {} stage {} to {} on start tracking", wither.getId(), brain.stage(), player.getGameProfile().name());
             WpNetwork.sendToPlayer(player, brain.stagePayload());
         }
     }

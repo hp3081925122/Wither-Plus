@@ -5,7 +5,7 @@ import com.witherplus.client.Draw;
 import com.witherplus.client.VfxInstance;
 import com.witherplus.wither.WpMath;
 import java.util.List;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 
@@ -65,7 +65,7 @@ public final class SpiresVfx extends VfxInstance {
             }
             Draw.end(Draw.GROUND_WARNING, 0.7F, 0.3F, 0.0F);
         }
-        ResourceLocation[] textures = {Draw.BONE_SPIKE_BASE, Draw.BONE_SPIKE_MIDDLE, Draw.BONE_SPIKE_TIP};
+        Identifier[] textures = {Draw.BONE_SPIKE_BASE, Draw.BONE_SPIKE_MIDDLE, Draw.BONE_SPIKE_TIP};
         for (int pass = 0; pass < 3; pass++) {
             if (!Draw.begin(Draw.Material.BLOCK, textures[pass])) {
                 break;

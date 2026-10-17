@@ -35,7 +35,7 @@ public abstract class WitherBossMixin extends Monster implements WitherBrainHold
 
     @Inject(method = "aiStep", at = @At("TAIL"))
     private void wp$aiStep(CallbackInfo ci) {
-        if (this.level().isClientSide || !this.isAlive()) {
+        if (this.level().isClientSide() || !this.isAlive()) {
             return;
         }
         WitherBrain brain = this.wp$getBrain();
@@ -48,7 +48,7 @@ public abstract class WitherBossMixin extends Monster implements WitherBrainHold
 
     @Inject(method = "performRangedAttack(IDDDZ)V", at = @At("HEAD"), cancellable = true)
     private void wp$performRangedAttack(int head, double x, double y, double z, boolean dangerous, CallbackInfo ci) {
-        if (this.level().isClientSide) {
+        if (this.level().isClientSide()) {
             return;
         }
         WitherBrain brain = this.wp$getBrain();
@@ -57,9 +57,9 @@ public abstract class WitherBossMixin extends Monster implements WitherBrainHold
         }
     }
 
-    @Inject(method = "hurt", at = @At("HEAD"), cancellable = true)
-    private void wp$hurt(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
-        if (this.level().isClientSide) {
+    @Inject(method = "hurtServer", at = @At("HEAD"), cancellable = true)
+    private void wp$hurt(net.minecraft.server.level.ServerLevel level, DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
+        if (this.level().isClientSide()) {
             return;
         }
         WitherBrain brain = this.wp$getBrain();
@@ -69,12 +69,12 @@ public abstract class WitherBossMixin extends Monster implements WitherBrainHold
     }
 
     @Inject(method = "addAdditionalSaveData", at = @At("TAIL"))
-    private void wp$save(CompoundTag tag, CallbackInfo ci) {
+    private void wp$save(net.minecraft.world.level.storage.ValueOutput tag, CallbackInfo ci) {
         this.wp$getBrain().save(tag);
     }
 
     @Inject(method = "readAdditionalSaveData", at = @At("TAIL"))
-    private void wp$load(CompoundTag tag, CallbackInfo ci) {
+    private void wp$load(net.minecraft.world.level.storage.ValueInput tag, CallbackInfo ci) {
         this.wp$getBrain().load(tag);
     }
 }

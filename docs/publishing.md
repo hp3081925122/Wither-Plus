@@ -21,7 +21,8 @@
 
 - 1201forge：原版 Minecraft 1.20.1 Forge。
 - 1211neoforge：迁移版 Minecraft 1.21.1 NeoForge。
-- 两个分支对应独立本地工作树。
+- 2612neoforge：迁移版 Minecraft 26.1.2 / NeoForge 26.1.2.95 / Java 25。
+- 三个分支对应独立本地工作树。
 ## 2026-10-17 首次文件提交
 
 两个版本分别使用 Java 17、Java 21 构建成功，并通过 JAR 元数据、UTF-8 资源和临时验证器排除检查。
@@ -38,3 +39,10 @@
 - Forge JAR SHA-256：`7e340407a4458e9fd6cb4972672ee8fad84b28c412f977f8ad4fcbacc74a16e3`。
 - NeoForge Beta JAR SHA-256：`efa6146550b7fd82d0e5c2d5f5dc8cdf6f578ab392d7e2508e6773fffbe8a2eb`。
 最后一次后台核对：两个文件均为 Under Review（审核中）；项目仍提示待审核，不承诺审核或公开时间。
+
+
+## 26.1.2 独立迁移分支
+
+`2612neoforge` 基于 `1211neoforge` 的 `f99b908` 建立，模组版本保留 `0.0.1-beta`。
+本次只构建、验证和推送源码，未为 26.1.2 上传 CurseForge 文件。现有两个文件的审核状态沿用上次核对记录。
+目标版验证详见 `migration-26.1.2-neoforge.md`。

@@ -8,7 +8,7 @@ import com.witherplus.wither.hazard.Hazard;
 import com.witherplus.wither.skill.WitherSkill;
 import java.util.ArrayList;
 import java.util.List;
-import javax.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
@@ -261,7 +261,7 @@ public final class WitherBrain {
     }
 
     public boolean damage(LivingEntity victim, double multiplier) {
-        boolean hit = victim.hurt(this.wither.damageSources().mobAttack(this.wither), (float) (this.attack() * multiplier));
+        boolean hit = victim.hurtServer(this.level(), this.wither.damageSources().mobAttack(this.wither), (float) (this.attack() * multiplier));
         int seconds = WpConfig.WITHER_SECONDS.get();
         if (hit && seconds > 0) {
             victim.addEffect(new MobEffectInstance(MobEffects.WITHER, seconds * 20, WpConfig.WITHER_AMPLIFIER.get()), this.wither);
@@ -309,12 +309,12 @@ public final class WitherBrain {
         if (entity instanceof Player) {
             return true;
         }
-        return entity == this.wither.getTarget() || !entity.getType().is(net.minecraft.tags.EntityTypeTags.UNDEAD);
+        return entity == this.wither.getTarget() || !entity.getType().builtInRegistryHolder().is(net.minecraft.tags.EntityTypeTags.UNDEAD);
     }
 
     public double groundY(double x, double z, double fallback) {
         int y = this.level().getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Mth.floor(x), Mth.floor(z));
-        if (y <= this.level().getMinBuildHeight() + 1 || y > fallback + 24.0) {
+        if (y <= this.level().getMinY() + 1 || y > fallback + 24.0) {
             return fallback;
         }
         return y;
@@ -340,13 +340,13 @@ public final class WitherBrain {
         this.pending.add(hazard);
     }
 
-    public void save(CompoundTag tag) {
+    public void save(net.minecraft.world.level.storage.ValueOutput tag) {
         tag.putBoolean("WpStageTwo", this.stageTwoReached);
         tag.putBoolean("WpStageThree", this.stageThreeReached);
     }
 
-    public void load(CompoundTag tag) {
-        this.stageTwoReached = tag.getBoolean("WpStageTwo");
-        this.stageThreeReached = tag.getBoolean("WpStageThree");
+    public void load(net.minecraft.world.level.storage.ValueInput tag) {
+        this.stageTwoReached = tag.getBooleanOr("WpStageTwo", false);
+        this.stageThreeReached = tag.getBooleanOr("WpStageThree", false);
     }
 }

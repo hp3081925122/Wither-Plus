@@ -1,6 +1,1 @@
-{
-  "pack": {
-    "description": "Wither Plus resources",
-    "pack_format": 34
-  }
-}
+{"pack":{"description":"Wither Plus resources","min_format":84,"max_format":84}}

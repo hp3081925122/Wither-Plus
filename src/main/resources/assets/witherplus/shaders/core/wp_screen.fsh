@@ -1,9 +1,15 @@
-#version 150
+#version 330
+
+layout(std140) uniform WpUniforms {
+    vec4 WpParams;
+    vec4 WpTint;
+    vec4 WpFlash;
+    vec2 ScreenSize;
+    float GameTime;
+};
+
 
 uniform sampler2D Sampler0;
-uniform vec4 WpParams;
-uniform vec4 WpTint;
-uniform vec4 WpFlash;
 
 in vec2 texCoord0;
 

@@ -1,62 +1,44 @@
 package com.witherplus.client;
 
-import com.mojang.blaze3d.platform.GlStateManager;
-import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.pipeline.BlendFunction;
+import com.mojang.blaze3d.pipeline.ColorTargetState;
+import com.mojang.blaze3d.pipeline.DepthStencilState;
+import com.mojang.blaze3d.pipeline.RenderPipeline;
+import com.mojang.blaze3d.platform.CompareOp;
+import com.mojang.blaze3d.shaders.UniformType;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import com.witherplus.WitherPlus;
-import java.io.IOException;
-import javax.annotation.Nullable;
-import net.minecraft.client.renderer.ShaderInstance;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.packs.resources.ResourceProvider;
-import net.neoforged.neoforge.client.event.RegisterShadersEvent;
+import java.util.Optional;
+import net.minecraft.client.renderer.RenderPipelines;
+import net.neoforged.neoforge.client.event.RegisterRenderPipelinesEvent;
 
 public final class WpShaders {
-    @Nullable
-    public static ShaderInstance flame;
-    @Nullable
-    public static ShaderInstance ground;
-    @Nullable
-    public static ShaderInstance sphere;
-    @Nullable
-    public static ShaderInstance screen;
-
-    private static boolean additive;
-
-    private WpShaders() {
-    }
-
-    public static void setAdditive(boolean value) {
-        additive = value;
-    }
-
-    private static final class WorldShader extends ShaderInstance {
-        private WorldShader(ResourceProvider provider, ResourceLocation id, VertexFormat format) throws IOException {
-            super(provider, id, format);
-        }
-
-        @Override
-        public void apply() {
-            super.apply();
-            RenderSystem.enableBlend();
-            if (additive) {
-                RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE);
-            } else {
-                RenderSystem.defaultBlendFunc();
-            }
+    public static final int SCREEN = 8;
+    private static final RenderPipeline[] PIPELINES = new RenderPipeline[9];
+    static {
+        String[] fragments = {"flame", "flame", "flame", "ground", "ground", "sphere", "sphere", "block", "screen"};
+        for (int i = 0; i < PIPELINES.length; i++) {
+            boolean screen = i == SCREEN;
+            boolean normal = i == 5 || i == 6;
+            boolean additive = i < Draw.Material.values().length && Draw.Material.values()[i].additive;
+            var builder = RenderPipeline.builder(RenderPipelines.MATRICES_PROJECTION_SNIPPET)
+                .withLocation(WitherPlus.id("pipeline/wp_" + i))
+                .withVertexShader(WitherPlus.id("core/wp_" + (screen ? "screen" : normal ? "normal" : "tex")))
+                .withFragmentShader(WitherPlus.id("core/wp_" + fragments[i]))
+                .withVertexFormat(screen ? DefaultVertexFormat.POSITION_TEX : normal ? DefaultVertexFormat.POSITION_TEX_COLOR_NORMAL : DefaultVertexFormat.POSITION_TEX_COLOR, VertexFormat.Mode.QUADS)
+                .withUniform("WpUniforms", UniformType.UNIFORM_BUFFER)
+                .withSampler("Sampler0")
+                .withDepthStencilState(screen ? Optional.empty() : Optional.of(new DepthStencilState(CompareOp.LESS_THAN_OR_EQUAL, i == 7)))
+                .withColorTargetState(new ColorTargetState(additive ? BlendFunction.LIGHTNING : BlendFunction.TRANSLUCENT))
+                .withCull(false);
+            PIPELINES[i] = builder.build();
         }
     }
-
-    public static void register(RegisterShadersEvent event) {
-        try {
-            event.registerShader(new WorldShader(event.getResourceProvider(), WitherPlus.id("wp_flame"), DefaultVertexFormat.POSITION_TEX_COLOR), s -> flame = s);
-            event.registerShader(new WorldShader(event.getResourceProvider(), WitherPlus.id("wp_ground"), DefaultVertexFormat.POSITION_TEX_COLOR), s -> ground = s);
-            event.registerShader(new WorldShader(event.getResourceProvider(), WitherPlus.id("wp_sphere"), DefaultVertexFormat.POSITION_TEX_COLOR_NORMAL), s -> sphere = s);
-            event.registerShader(new ShaderInstance(event.getResourceProvider(), WitherPlus.id("wp_screen"), DefaultVertexFormat.POSITION_TEX), s -> screen = s);
-            WitherPlus.LOGGER.info("Wither Plus shaders registered");
-        } catch (IOException e) {
-            WitherPlus.LOGGER.error("Failed to load Wither Plus shaders", e);
-        }
+    private WpShaders() {}
+    public static void register(RegisterRenderPipelinesEvent event) {
+        for (var pipeline : PIPELINES) event.registerPipeline(pipeline);
+        WitherPlus.LOGGER.info("Registered {} Wither Plus render pipelines", PIPELINES.length);
     }
+    public static RenderPipeline pipeline(int index) { return PIPELINES[index]; }
 }

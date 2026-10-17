@@ -63,7 +63,7 @@ public record VfxPayload(int kind, int entityId, CompoundTag data) implements ne
     }
 
     public static Vec3 getVec(CompoundTag tag, String key) {
-        return new Vec3(tag.getDouble(key + "X"), tag.getDouble(key + "Y"), tag.getDouble(key + "Z"));
+        return new Vec3(tag.getDoubleOr(key + "X", 0.0), tag.getDoubleOr(key + "Y", 0.0), tag.getDoubleOr(key + "Z", 0.0));
     }
 
     public static void putPoints(CompoundTag tag, String key, List<Vec3> points) {
@@ -77,10 +77,10 @@ public record VfxPayload(int kind, int entityId, CompoundTag data) implements ne
     }
 
     public static List<Vec3> getPoints(CompoundTag tag, String key) {
-        ListTag list = tag.getList(key, Tag.TAG_DOUBLE);
+        ListTag list = tag.getListOrEmpty(key);
         List<Vec3> points = new ArrayList<>();
         for (int i = 0; i + 2 < list.size(); i += 3) {
-            points.add(new Vec3(list.getDouble(i), list.getDouble(i + 1), list.getDouble(i + 2)));
+            points.add(new Vec3(list.getDoubleOr(i, 0.0), list.getDoubleOr(i + 1, 0.0), list.getDoubleOr(i + 2, 0.0)));
         }
         return points;
     }

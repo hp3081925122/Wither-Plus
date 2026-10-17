@@ -14,8 +14,8 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.monster.WitherSkeleton;
+import net.minecraft.world.entity.EntitySpawnReason;
+import net.minecraft.world.entity.monster.skeleton.WitherSkeleton;
 import net.minecraft.world.phys.Vec3;
 
 public final class BoneCrownSkill extends WitherSkill {
@@ -73,7 +73,7 @@ public final class BoneCrownSkill extends WitherSkill {
     }
 
     private void summon(Vec3 point) {
-        WitherSkeleton skeleton = EntityType.WITHER_SKELETON.spawn(this.brain.level(), BlockPos.containing(point), MobSpawnType.MOB_SUMMONED);
+        WitherSkeleton skeleton = EntityType.WITHER_SKELETON.spawn(this.brain.level(), BlockPos.containing(point), EntitySpawnReason.MOB_SUMMONED);
         if (skeleton == null) {
             if (WpConfig.DEBUG_LOGGING.get()) {
                 WitherPlus.LOGGER.info("Bone crown failed to summon wither skeleton at {}", point);

@@ -1,9 +1,17 @@
-#version 150
+#version 330
+
+#moj_import <minecraft:dynamictransforms.glsl>
+
+layout(std140) uniform WpUniforms {
+    vec4 WpParams;
+    vec4 WpTint;
+    vec4 WpFlash;
+    vec2 ScreenSize;
+    float GameTime;
+};
+
 
 uniform sampler2D Sampler0;
-uniform vec4 ColorModulator;
-uniform float GameTime;
-uniform vec4 WpParams;
 
 in vec2 texCoord0;
 in vec4 vertexColor;

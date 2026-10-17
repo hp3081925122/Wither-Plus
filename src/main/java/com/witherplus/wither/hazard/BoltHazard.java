@@ -55,7 +55,7 @@ public final class BoltHazard extends Hazard {
                 brain.knockFrom(victim, pos, 0.3, 0.2);
             }
         }
-        level.playSound(null, pos.x, pos.y, pos.z, SoundEvents.WITHER_SHOOT, SoundSource.HOSTILE, 0.6F, 1.6F + level.random.nextFloat() * 0.3F);
+        level.playSound(null, pos.x, pos.y, pos.z, SoundEvents.WITHER_SHOOT, SoundSource.HOSTILE, 0.6F, 1.6F + level.getRandom().nextFloat() * 0.3F);
         return false;
     }
 }

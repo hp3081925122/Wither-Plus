@@ -3,7 +3,7 @@ package com.witherplus.wither.skill;
 import com.witherplus.network.VfxPayload;
 import com.witherplus.wither.WitherBrain;
 import java.util.List;
-import javax.annotation.Nullable;
+import org.jspecify.annotations.Nullable;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;

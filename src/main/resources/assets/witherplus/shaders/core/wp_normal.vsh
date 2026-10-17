@@ -1,12 +1,21 @@
-#version 150
+#version 330
+
+#moj_import <minecraft:dynamictransforms.glsl>
+#moj_import <minecraft:projection.glsl>
+layout(std140) uniform WpUniforms {
+    vec4 WpParams;
+    vec4 WpTint;
+    vec4 WpFlash;
+    vec2 ScreenSize;
+    float GameTime;
+};
+
 
 in vec3 Position;
 in vec2 UV0;
 in vec4 Color;
 in vec3 Normal;
 
-uniform mat4 ModelViewMat;
-uniform mat4 ProjMat;
 
 out vec2 texCoord0;
 out vec4 vertexColor;

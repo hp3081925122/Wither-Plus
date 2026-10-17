@@ -8,5 +8,8 @@ Reworks the vanilla Wither into a three-stage boss with soul flames, bone attack
 
 - `1201forge`: Minecraft 1.20.1 / Forge / Java 17
 - `1211neoforge`: Minecraft 1.21.1 / NeoForge / Java 21
+- `2612neoforge`: Minecraft 26.1.2 / NeoForge 26.1.2.95 / Java 25
+
+26.1.2 迁移与验证记录见 [迁移文档](docs/migration-26.1.2-neoforge.md)。
 
 All Rights Reserved.

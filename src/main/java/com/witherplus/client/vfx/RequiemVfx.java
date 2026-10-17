@@ -31,16 +31,16 @@ public final class RequiemVfx extends VfxInstance {
     private final List<Vec3> oddCells = new ArrayList<>();
 
     public RequiemVfx(int witherId, CompoundTag d, int rgb) {
-        super(d.getInt("duration") + 10);
+        super(d.getIntOr("duration", 0) + 10);
         this.center = VfxPayload.getVec(d, "center");
-        this.radius = d.getFloat("radius");
-        this.cell = Math.max(1.0F, d.getFloat("cell"));
-        this.waveA = d.getInt("waveA");
-        this.waveB = d.getInt("waveB");
-        this.ring = d.getInt("ring");
-        this.ringSpeed = d.getFloat("ringSpeed");
-        this.ringRadius = d.getFloat("ringRadius");
-        this.duration = d.getInt("duration");
+        this.radius = d.getFloatOr("radius", 0.0F);
+        this.cell = Math.max(1.0F, d.getFloatOr("cell", 0.0F));
+        this.waveA = d.getIntOr("waveA", 0);
+        this.waveB = d.getIntOr("waveB", 0);
+        this.ring = d.getIntOr("ring", 0);
+        this.ringSpeed = d.getFloatOr("ringSpeed", 0.0F);
+        this.ringRadius = d.getFloatOr("ringRadius", 0.0F);
+        this.duration = d.getIntOr("duration", 0);
         this.rgb = rgb;
         int count = Mth.ceil(this.radius / this.cell);
         for (int ix = -count; ix < count; ix++) {

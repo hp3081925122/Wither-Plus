@@ -1,22 +1,16 @@
 package com.witherplus.client;
 
-import com.mojang.blaze3d.platform.GlStateManager;
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
-import com.mojang.blaze3d.vertex.BufferUploader;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.VertexFormat;
-import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.LevelRenderer;
-import net.minecraft.client.renderer.LightTexture;
-import net.minecraft.client.renderer.ShaderInstance;
+import net.minecraft.util.LightCoordsUtil;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.Vec3;
@@ -63,9 +57,9 @@ public final class Draw {
     public static final int HELL = 0xFF5A1F;
     public static final int ASH = 0x15161C;
     public static final int BONE_COLOR = 0xE8E0CC;
-    public static final ResourceLocation BONE_SPIKE_BASE = ResourceLocation.fromNamespaceAndPath("witherplus", "textures/vfx/bone_spike_base.png");
-    public static final ResourceLocation BONE_SPIKE_MIDDLE = ResourceLocation.fromNamespaceAndPath("witherplus", "textures/vfx/bone_spike_middle.png");
-    public static final ResourceLocation BONE_SPIKE_TIP = ResourceLocation.fromNamespaceAndPath("witherplus", "textures/vfx/bone_spike_tip.png");
+    public static final Identifier BONE_SPIKE_BASE = Identifier.fromNamespaceAndPath("witherplus", "textures/vfx/bone_spike_base.png");
+    public static final Identifier BONE_SPIKE_MIDDLE = Identifier.fromNamespaceAndPath("witherplus", "textures/vfx/bone_spike_middle.png");
+    public static final Identifier BONE_SPIKE_TIP = Identifier.fromNamespaceAndPath("witherplus", "textures/vfx/bone_spike_tip.png");
 
     private static BufferBuilder buffer;
     private static Material current;
@@ -79,18 +73,18 @@ public final class Draw {
     private static Vec3 camPos = Vec3.ZERO;
     private static Vec3 camRight = new Vec3(1.0, 0.0, 0.0);
     private static Vec3 camUp = new Vec3(0.0, 1.0, 0.0);
-    private static ResourceLocation blockTexture = BONE_SPIKE_TIP;
+    private static Identifier blockTexture = BONE_SPIKE_TIP;
 
     private Draw() {
     }
 
-    public static void setup(Camera camera) {
-        camPos = camera.getPosition();
+    public static void setup(net.minecraft.client.renderer.state.level.CameraRenderState camera) {
+        camPos = camera.pos;
         cx = camPos.x;
         cy = camPos.y;
         cz = camPos.z;
-        Vector3f left = camera.getLeftVector();
-        Vector3f up = camera.getUpVector();
+        Vector3f left = new Vector3f(-1, 0, 0).rotate(camera.orientation);
+        Vector3f up = new Vector3f(0, 1, 0).rotate(camera.orientation);
         camRight = new Vec3(-left.x(), -left.y(), -left.z());
         camUp = new Vec3(up.x(), up.y(), up.z());
     }
@@ -107,24 +101,12 @@ public final class Draw {
         return camUp;
     }
 
-    private static ShaderInstance shaderOf(Material material) {
-        return switch (material) {
-            case FLAME, SMOKE, BONE -> WpShaders.flame;
-            case GROUND, GROUND_ALPHA -> WpShaders.ground;
-            case SPHERE, SPHERE_ALPHA -> WpShaders.sphere;
-            case BLOCK -> GameRenderer.getPositionTexColorShader();
-        };
-    }
-
-    public static boolean begin(Material material, ResourceLocation texture) {
+    public static boolean begin(Material material, Identifier texture) {
         blockTexture = texture;
         return begin(material);
     }
 
     public static boolean begin(Material material) {
-        if (shaderOf(material) == null) {
-            return false;
-        }
         current = material;
         hasNormal = material == Material.SPHERE || material == Material.SPHERE_ALPHA;
         VertexFormat format = DefaultVertexFormat.POSITION_TEX_COLOR;
@@ -141,26 +123,7 @@ public final class Draw {
         if (mesh == null) {
             return;
         }
-        ShaderInstance shader = shaderOf(current);
-        if (current == Material.BLOCK) {
-            RenderSystem.setShader(() -> shader);
-            RenderSystem.setShaderTexture(0, blockTexture);
-            RenderSystem.defaultBlendFunc();
-            RenderSystem.depthMask(true);
-            BufferUploader.drawWithShader(mesh);
-            RenderSystem.depthMask(false);
-            return;
-        }
-        shader.safeGetUniform("WpParams").set(a, b, c, d);
-        RenderSystem.setShader(() -> shader);
-        RenderSystem.setShaderTexture(0, NoiseTexture.id());
-        if (current.additive) {
-            RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE);
-        } else {
-            RenderSystem.defaultBlendFunc();
-        }
-        WpShaders.setAdditive(current.additive);
-        BufferUploader.drawWithShader(mesh);
+        WpGpu.draw(mesh, current.ordinal(), new org.joml.Vector4f(a, b, c, d), new org.joml.Vector4f(1), new org.joml.Vector4f(1), blockTexture);
     }
 
     public static void normal(double x, double y, double z) {
@@ -248,7 +211,7 @@ public final class Draw {
             return fallback;
         }
         int y = level.getHeight(Heightmap.Types.MOTION_BLOCKING, Mth.floor(x), Mth.floor(z));
-        if (y <= level.getMinBuildHeight() + 1 || y > fallback + 24.0) {
+        if (y <= level.getMinY() + 1 || y > fallback + 24.0) {
             return fallback;
         }
         return y;
@@ -398,8 +361,8 @@ public final class Draw {
         if (level == null) {
             return 1.0F;
         }
-        int packed = LevelRenderer.getLightColor(level, BlockPos.containing(pos));
-        int value = Math.max(LightTexture.block(packed), LightTexture.sky(packed) - level.getSkyDarken());
+        int packed = LevelRenderer.getLightCoords(level, BlockPos.containing(pos));
+        int value = Math.max(LightCoordsUtil.block(packed), LightCoordsUtil.sky(packed) - level.getSkyDarken());
         return 0.25F + 0.75F * Mth.clamp(value / 15.0F, 0.0F, 1.0F);
     }
 
