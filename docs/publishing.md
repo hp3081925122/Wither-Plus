@@ -44,5 +44,23 @@
 ## 26.1.2 独立迁移分支
 
 `2612neoforge` 基于 `1211neoforge` 的 `f99b908` 建立，模组版本保留 `0.0.1-beta`。
-本次只构建、验证和推送源码，未为 26.1.2 上传 CurseForge 文件。现有两个文件的审核状态沿用上次核对记录。
+首次迁移阶段只构建、验证和推送源码，未上传 CurseForge；后续正式发布记录见下。
 目标版验证详见 `migration-26.1.2-neoforge.md`。
+
+
+## 2026-10-17 26.1.2 正式文件提交
+
+按用户要求，将 26.1.2 分支模组版本从 `0.0.1-beta` 改为 `0.0.1`，重新构建并通过 JAR 元数据与验证器排除检查。游戏客户端保持原进程运行，未因发布改动而重启。
+
+- 项目 ID：1749910，与已有两个版本相同。
+- 文件 ID：9222621。
+- 发行类型：Release，未标记 Beta。
+- 显示名称：26.1.2-neoforge-Wither Plus-0.0.1。
+- 文件名：`witherplus-26.1.2-neoforge-0.0.1.jar`，183892 字节。
+- 精确标签：26.1.2、NeoForge、Java 25、Client、Server。
+- 已填写中英文更新说明，审核通过后自动发布，无额外模组依赖。
+- 文件后台：https://authors.curseforge.com/#/projects/1749910/files/9222621
+- 最后核对状态：Processing。文件 ID 和处理状态证明提交已接收，不表示审核通过；项目仍提示待审核。
+- SHA-256：`3f63d5224701ac9acd50177f087730fa569d1681342447ecebdf3da2d96e4cda`。
+- 构建日志：`D:/AI临时文件/witherplus-2612-release-build.log`，BUILD SUCCESSFUL（21s）。
+- 内置浏览器结果截图：`D:/AI临时文件/witherplus-2612-cf-release.png`。

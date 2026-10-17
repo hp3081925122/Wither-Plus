@@ -64,7 +64,7 @@
 - 结果元数据：`results-2612.json`、`results-2612-extra.json`，位于同一目录，包含每张原始图片路径。
 - 客户端日志：`D:/AI临时文件/witherplus-2612-client-final.log`、`witherplus-2612-client-extra.log`。
 
-### 正式构建与发布边界
+### 首次迁移构建与发布边界
 
 正式构建不加载任何外置验证 init 脚本或 Render Preview 依赖。版本保留 `0.0.1-beta`。本轮未上传 26.1.2 到 CurseForge。
 
@@ -73,3 +73,11 @@
 - 正式文件：`build/libs/witherplus-26.1.2-neoforge-0.0.1-beta.jar`，183895 字节。
 - SHA-256：`aa5f799c3d2e7d7903fe85a0521dbb6079f773e5651e10744c81e468bb799a4a`。
 - JAR 审核：全部 class 为 Java 25（major 69）；元数据与文本资源 UTF-8、ARR、Beta、资源包格式 84、JAVA_25 Mixin 正确；5 张纹理齐全；不含验证器或 Render Preview 类。
+
+
+### 后续 0.0.1 正式发布
+
+用户随后要求将 26.1.2 上传同一 CF 项目并去掉 Beta 标记，已将 `mod_version` 改为 `0.0.1`。
+正式 JAR 为 `build/libs/witherplus-26.1.2-neoforge-0.0.1.jar`，183892 字节，SHA-256 为 `3f63d5224701ac9acd50177f087730fa569d1681342447ecebdf3da2d96e4cda`。
+重新 `gradlew build` 成功（21s），核对包内版本为 0.0.1，未包含验证器或 Render Preview；本次未改动技能和渲染代码，因此未重复运行已通过的迁移测试。
+CF 项目 1749910 已接收文件 9222621，发行类型 Release，最后状态 Processing；详情见 `publishing.md`。初次迁移 Beta 包记录仅作为历史验证证据保留。
