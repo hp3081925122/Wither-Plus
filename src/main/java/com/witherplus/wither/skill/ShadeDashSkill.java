@@ -110,7 +110,7 @@ public final class ShadeDashSkill extends WitherSkill {
         this.invulnerable = false;
         this.sendShade(false);
         Vec3 center = this.brain.bodyCenter();
-        this.brain.addHazard(new BlastHazard(center, 1, 4.0, WpConfig.SHADE_DASH.damage.get() * 0.5, 0.7, 0.3, SoundEvents.GENERIC_EXPLODE, 1.5F, 1.1F));
+        this.brain.addHazard(new BlastHazard(center, 1, 4.0, WpConfig.SHADE_DASH.damage.get() * 0.5, 0.7, 0.3, SoundEvents.GENERIC_EXPLODE.value(), 1.5F, 1.1F));
         CompoundTag data = new CompoundTag();
         VfxPayload.putVec(data, "pos", center);
         data.putFloat("radius", 4.0F);

@@ -9,7 +9,19 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.phys.Vec3;
 
-public record VfxPayload(int kind, int entityId, CompoundTag data) {
+public record VfxPayload(int kind, int entityId, CompoundTag data) implements net.minecraft.network.protocol.common.custom.CustomPacketPayload {
+    public static final Type<VfxPayload> TYPE = new Type<>(com.witherplus.WitherPlus.id("vfx"));
+    public static final net.minecraft.network.codec.StreamCodec<FriendlyByteBuf, VfxPayload> STREAM_CODEC = net.minecraft.network.codec.StreamCodec.of(VfxPayload::encodeTo, VfxPayload::decode);
+
+    private static void encodeTo(FriendlyByteBuf buffer, VfxPayload payload) {
+        encode(payload, buffer);
+    }
+
+    @Override
+    public Type<VfxPayload> type() {
+        return TYPE;
+    }
+
     public static final int STAGE = 0;
     public static final int PYRE = 1;
     public static final int METEOR = 2;

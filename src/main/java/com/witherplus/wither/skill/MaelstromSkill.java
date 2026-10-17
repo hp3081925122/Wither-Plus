@@ -81,7 +81,7 @@ public final class MaelstromSkill extends WitherSkill {
             }
         }
         if (this.tick % 10 == 0) {
-            this.brain.playSound(this.center, SoundEvents.SOUL_ESCAPE, 3.0F, 0.5F + this.wither.getRandom().nextFloat() * 0.3F);
+            this.brain.playSound(this.center, SoundEvents.SOUL_ESCAPE.value(), 3.0F, 0.5F + this.wither.getRandom().nextFloat() * 0.3F);
         }
     }
 }

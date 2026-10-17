@@ -54,7 +54,7 @@ public final class SkullMeteorSkill extends WitherSkill {
             impacts.add(impact);
             this.skies.add(sky);
             this.times[i] = time;
-            this.brain.addHazard(new BlastHazard(impact.add(0.0, 0.5, 0.0), time, radius, multiplier, 0.6, 0.45, SoundEvents.GENERIC_EXPLODE, 2.0F, 0.8F));
+            this.brain.addHazard(new BlastHazard(impact.add(0.0, 0.5, 0.0), time, radius, multiplier, 0.6, 0.45, SoundEvents.GENERIC_EXPLODE.value(), 2.0F, 0.8F));
         }
         this.duration = FIRST + (count - 1) * SPACING + 15;
         this.moveTarget = this.wither.position().add(0.0, 4.0, 0.0);

@@ -9,12 +9,13 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.boss.wither.WitherBoss;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.EntityJoinLevelEvent;
-import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.fml.ModLoadingContext;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.config.ModConfig;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent;
+import net.neoforged.fml.ModContainer;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.config.ModConfig;
 import org.slf4j.Logger;
 
 @Mod(WitherPlus.MODID)
@@ -22,16 +23,16 @@ public final class WitherPlus {
     public static final String MODID = "witherplus";
     public static final Logger LOGGER = LogUtils.getLogger();
 
-    public WitherPlus() {
-        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, WpConfig.COMMON_SPEC);
-        ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, WpConfig.CLIENT_SPEC);
-        WpNetwork.register();
-        MinecraftForge.EVENT_BUS.addListener(this::onEntityJoin);
-        MinecraftForge.EVENT_BUS.addListener(this::onStartTracking);
+    public WitherPlus(IEventBus modBus, ModContainer container) {
+        container.registerConfig(ModConfig.Type.COMMON, WpConfig.COMMON_SPEC);
+        container.registerConfig(ModConfig.Type.CLIENT, WpConfig.CLIENT_SPEC);
+        modBus.addListener(WpNetwork::register);
+        NeoForge.EVENT_BUS.addListener(this::onEntityJoin);
+        NeoForge.EVENT_BUS.addListener(this::onStartTracking);
     }
 
     public static ResourceLocation id(String path) {
-        return new ResourceLocation(MODID, path);
+        return ResourceLocation.fromNamespaceAndPath(MODID, path);
     }
 
     private void onStartTracking(PlayerEvent.StartTracking event) {

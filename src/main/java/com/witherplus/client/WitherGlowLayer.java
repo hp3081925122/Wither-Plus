@@ -36,11 +36,11 @@ public final class WitherGlowLayer extends RenderLayer<WitherBoss, WitherBossMod
         float g = ((rgb >> 8) & 255) / 255.0F;
         float b = (rgb & 255) / 255.0F;
         float pulse = 0.75F + 0.25F * Mth.sin(ageInTicks * 0.12F);
-        this.getParentModel().renderToBuffer(pose, buffers.getBuffer(RenderType.eyes(GLOW)), LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, r * pulse, g * pulse, b * pulse, 1.0F);
+        this.getParentModel().renderToBuffer(pose, buffers.getBuffer(RenderType.eyes(GLOW)), LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, net.minecraft.util.FastColor.ARGB32.colorFromFloat(1.0F, r * pulse, g * pulse, b * pulse));
         float rage = WitherStageClient.rage(wither.getId());
         if (rage > 0.01F) {
             float k = rage * (0.55F + 0.45F * Mth.sin(ageInTicks * 0.3F));
-            this.getParentModel().renderToBuffer(pose, buffers.getBuffer(RenderType.eyes(RAGE)), LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, r * k, g * k, b * k, 1.0F);
+            this.getParentModel().renderToBuffer(pose, buffers.getBuffer(RenderType.eyes(RAGE)), LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, net.minecraft.util.FastColor.ARGB32.colorFromFloat(1.0F, r * k, g * k, b * k));
         }
     }
 }

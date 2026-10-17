@@ -61,7 +61,7 @@ public final class BoneCrownSkill extends WitherSkill {
             }
         }
         if (this.tick == this.duration - 10) {
-            this.brain.addHazard(new BlastHazard(this.center.add(0.0, 1.0, 0.0), 1, BLAST_RADIUS, WpConfig.BONE_CROWN.damage.get(), 1.0, 0.5, SoundEvents.GENERIC_EXPLODE, 4.0F, 0.6F));
+            this.brain.addHazard(new BlastHazard(this.center.add(0.0, 1.0, 0.0), 1, BLAST_RADIUS, WpConfig.BONE_CROWN.damage.get(), 1.0, 0.5, SoundEvents.GENERIC_EXPLODE.value(), 4.0F, 0.6F));
             CompoundTag data = new CompoundTag();
             VfxPayload.putVec(data, "pos", this.center.add(0.0, 1.0, 0.0));
             data.putFloat("radius", (float) BLAST_RADIUS);

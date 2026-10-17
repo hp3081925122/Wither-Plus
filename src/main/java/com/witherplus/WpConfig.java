@@ -1,59 +1,59 @@
 package com.witherplus;
 
-import net.minecraftforge.common.ForgeConfigSpec;
+import net.neoforged.neoforge.common.ModConfigSpec;
 
 public final class WpConfig {
-    public static final ForgeConfigSpec COMMON_SPEC;
-    public static final ForgeConfigSpec CLIENT_SPEC;
+    public static final ModConfigSpec COMMON_SPEC;
+    public static final ModConfigSpec CLIENT_SPEC;
 
-    public static final ForgeConfigSpec.BooleanValue ENHANCE_ALL;
-    public static final ForgeConfigSpec.DoubleValue MAX_HEALTH;
-    public static final ForgeConfigSpec.DoubleValue ATTACK_DAMAGE;
-    public static final ForgeConfigSpec.DoubleValue KNOCKBACK_MULTIPLIER;
-    public static final ForgeConfigSpec.DoubleValue STAGE_TWO_HEALTH;
-    public static final ForgeConfigSpec.DoubleValue STAGE_THREE_HEALTH;
-    public static final ForgeConfigSpec.IntValue ACTION_INTERVAL;
-    public static final ForgeConfigSpec.DoubleValue RAGE_COOLDOWN_MULTIPLIER;
-    public static final ForgeConfigSpec.DoubleValue COMBAT_RANGE;
-    public static final ForgeConfigSpec.IntValue WITHER_SECONDS;
-    public static final ForgeConfigSpec.IntValue WITHER_AMPLIFIER;
-    public static final ForgeConfigSpec.BooleanValue DEBUG_LOGGING;
+    public static final ModConfigSpec.BooleanValue ENHANCE_ALL;
+    public static final ModConfigSpec.DoubleValue MAX_HEALTH;
+    public static final ModConfigSpec.DoubleValue ATTACK_DAMAGE;
+    public static final ModConfigSpec.DoubleValue KNOCKBACK_MULTIPLIER;
+    public static final ModConfigSpec.DoubleValue STAGE_TWO_HEALTH;
+    public static final ModConfigSpec.DoubleValue STAGE_THREE_HEALTH;
+    public static final ModConfigSpec.IntValue ACTION_INTERVAL;
+    public static final ModConfigSpec.DoubleValue RAGE_COOLDOWN_MULTIPLIER;
+    public static final ModConfigSpec.DoubleValue COMBAT_RANGE;
+    public static final ModConfigSpec.IntValue WITHER_SECONDS;
+    public static final ModConfigSpec.IntValue WITHER_AMPLIFIER;
+    public static final ModConfigSpec.BooleanValue DEBUG_LOGGING;
 
     public static final Skill SOUL_PYRE;
-    public static final ForgeConfigSpec.DoubleValue PYRE_SCORCH_MULTIPLIER;
+    public static final ModConfigSpec.DoubleValue PYRE_SCORCH_MULTIPLIER;
     public static final Skill SKULL_METEOR;
-    public static final ForgeConfigSpec.IntValue METEOR_COUNT;
-    public static final ForgeConfigSpec.DoubleValue METEOR_RADIUS;
+    public static final ModConfigSpec.IntValue METEOR_COUNT;
+    public static final ModConfigSpec.DoubleValue METEOR_RADIUS;
     public static final Skill SOUL_CHAINS;
-    public static final ForgeConfigSpec.IntValue CHAIN_TARGETS;
-    public static final ForgeConfigSpec.DoubleValue CHAIN_PULL;
+    public static final ModConfigSpec.IntValue CHAIN_TARGETS;
+    public static final ModConfigSpec.DoubleValue CHAIN_PULL;
     public static final Skill SHADE_DASH;
-    public static final ForgeConfigSpec.IntValue DASH_COUNT;
+    public static final ModConfigSpec.IntValue DASH_COUNT;
     public static final Skill BONE_SPIRES;
-    public static final ForgeConfigSpec.IntValue SPIRE_RAYS;
+    public static final ModConfigSpec.IntValue SPIRE_RAYS;
     public static final Skill BLACK_SUN;
-    public static final ForgeConfigSpec.DoubleValue SUN_PULL;
-    public static final ForgeConfigSpec.DoubleValue SUN_BOLT_MULTIPLIER;
+    public static final ModConfigSpec.DoubleValue SUN_PULL;
+    public static final ModConfigSpec.DoubleValue SUN_BOLT_MULTIPLIER;
     public static final Skill MAELSTROM;
-    public static final ForgeConfigSpec.DoubleValue MAELSTROM_RADIUS;
+    public static final ModConfigSpec.DoubleValue MAELSTROM_RADIUS;
     public static final Skill DEATH_SENTENCE;
-    public static final ForgeConfigSpec.IntValue SENTENCE_ROUNDS;
+    public static final ModConfigSpec.IntValue SENTENCE_ROUNDS;
     public static final Skill HYDRA_FURY;
-    public static final ForgeConfigSpec.IntValue HYDRA_BOLTS;
+    public static final ModConfigSpec.IntValue HYDRA_BOLTS;
     public static final Skill STYX_TIDE;
-    public static final ForgeConfigSpec.IntValue TIDE_WAVES;
+    public static final ModConfigSpec.IntValue TIDE_WAVES;
     public static final Skill BONE_CROWN;
-    public static final ForgeConfigSpec.IntValue CROWN_DURATION;
-    public static final ForgeConfigSpec.IntValue CROWN_SUMMONS;
+    public static final ModConfigSpec.IntValue CROWN_DURATION;
+    public static final ModConfigSpec.IntValue CROWN_SUMMONS;
     public static final Skill REQUIEM;
-    public static final ForgeConfigSpec.DoubleValue REQUIEM_RADIUS;
+    public static final ModConfigSpec.DoubleValue REQUIEM_RADIUS;
 
-    public static final ForgeConfigSpec.BooleanValue ENABLE_SCREEN_EFFECTS;
-    public static final ForgeConfigSpec.BooleanValue ENABLE_GLOW_LAYER;
-    public static final ForgeConfigSpec.DoubleValue CAMERA_SHAKE;
+    public static final ModConfigSpec.BooleanValue ENABLE_SCREEN_EFFECTS;
+    public static final ModConfigSpec.BooleanValue ENABLE_GLOW_LAYER;
+    public static final ModConfigSpec.DoubleValue CAMERA_SHAKE;
 
     static {
-        ForgeConfigSpec.Builder b = new ForgeConfigSpec.Builder();
+        ModConfigSpec.Builder b = new ModConfigSpec.Builder();
         b.comment("凋零基础属性").push("wither");
         ENHANCE_ALL = b.comment("是否增强所有凋零；false 时恢复原版凋零").define("enhanceAll", true);
         MAX_HEALTH = b.comment("凋零最大生命值").defineInRange("maxHealth", 600.0, 1.0, 1000000.0);
@@ -101,7 +101,7 @@ public final class WpConfig {
         b.pop();
         COMMON_SPEC = b.build();
 
-        ForgeConfigSpec.Builder c = new ForgeConfigSpec.Builder();
+        ModConfigSpec.Builder c = new ModConfigSpec.Builder();
         c.comment("客户端特效").push("vfx");
         ENABLE_SCREEN_EFFECTS = c.comment("启用全屏去饱和、闪屏与暗角").define("enableScreenEffects", true);
         ENABLE_GLOW_LAYER = c.comment("启用凋零模型发光层").define("enableGlowLayer", true);
@@ -114,12 +114,12 @@ public final class WpConfig {
     }
 
     public static final class Skill {
-        public final ForgeConfigSpec.BooleanValue enabled;
-        public final ForgeConfigSpec.IntValue cooldown;
-        public final ForgeConfigSpec.DoubleValue damage;
-        public final ForgeConfigSpec.IntValue weight;
+        public final ModConfigSpec.BooleanValue enabled;
+        public final ModConfigSpec.IntValue cooldown;
+        public final ModConfigSpec.DoubleValue damage;
+        public final ModConfigSpec.IntValue weight;
 
-        Skill(ForgeConfigSpec.Builder b, String key, String name, int cooldown, double damage, int weight) {
+        Skill(ModConfigSpec.Builder b, String key, String name, int cooldown, double damage, int weight) {
             this.enabled = b.comment("启用" + name).define(key + "_enabled", true);
             this.cooldown = b.comment(name + "冷却（tick）").defineInRange(key + "_cooldown", cooldown, 0, 100000);
             this.damage = b.comment(name + "伤害倍率").defineInRange(key + "_damageMultiplier", damage, 0.0, 1000.0);

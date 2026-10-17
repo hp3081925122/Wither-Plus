@@ -51,8 +51,8 @@ public final class StyxTideSkill extends WitherSkill {
             data.putFloat("height", (float) HEIGHT);
             data.putBoolean("jumpable", false);
             this.brain.sendVfx(VfxPayload.TIDE, data);
-            this.brain.playSound(this.center, SoundEvents.GENERIC_EXPLODE, 3.0F, 0.5F);
-            this.brain.playSound(this.center, SoundEvents.SOUL_ESCAPE, 4.0F, 0.4F);
+            this.brain.playSound(this.center, SoundEvents.GENERIC_EXPLODE.value(), 3.0F, 0.5F);
+            this.brain.playSound(this.center, SoundEvents.SOUL_ESCAPE.value(), 4.0F, 0.4F);
         }
         if (this.tick >= FIRST + (this.waves - 1) * INTERVAL + (int) (MAX_RADIUS / SPEED) + 5) {
             this.finish();

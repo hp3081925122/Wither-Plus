@@ -63,9 +63,9 @@ public final class Draw {
     public static final int HELL = 0xFF5A1F;
     public static final int ASH = 0x15161C;
     public static final int BONE_COLOR = 0xE8E0CC;
-    public static final ResourceLocation BONE_SPIKE_BASE = new ResourceLocation("witherplus", "textures/vfx/bone_spike_base.png");
-    public static final ResourceLocation BONE_SPIKE_MIDDLE = new ResourceLocation("witherplus", "textures/vfx/bone_spike_middle.png");
-    public static final ResourceLocation BONE_SPIKE_TIP = new ResourceLocation("witherplus", "textures/vfx/bone_spike_tip.png");
+    public static final ResourceLocation BONE_SPIKE_BASE = ResourceLocation.fromNamespaceAndPath("witherplus", "textures/vfx/bone_spike_base.png");
+    public static final ResourceLocation BONE_SPIKE_MIDDLE = ResourceLocation.fromNamespaceAndPath("witherplus", "textures/vfx/bone_spike_middle.png");
+    public static final ResourceLocation BONE_SPIKE_TIP = ResourceLocation.fromNamespaceAndPath("witherplus", "textures/vfx/bone_spike_tip.png");
 
     private static BufferBuilder buffer;
     private static Material current;
@@ -131,13 +131,12 @@ public final class Draw {
         if (hasNormal) {
             format = DefaultVertexFormat.POSITION_TEX_COLOR_NORMAL;
         }
-        buffer = Tesselator.getInstance().getBuilder();
-        buffer.begin(VertexFormat.Mode.QUADS, format);
+        buffer = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, format);
         return true;
     }
 
     public static void end(float a, float b, float c, float d) {
-        BufferBuilder.RenderedBuffer mesh = buffer.endOrDiscardIfEmpty();
+        com.mojang.blaze3d.vertex.MeshData mesh = buffer.build();
         buffer = null;
         if (mesh == null) {
             return;
@@ -174,11 +173,10 @@ public final class Draw {
         float r = ((rgb >> 16) & 255) / 255.0F;
         float g = ((rgb >> 8) & 255) / 255.0F;
         float b = (rgb & 255) / 255.0F;
-        VertexConsumer c = buffer.vertex((float) (x - cx), (float) (y - cy), (float) (z - cz)).uv(u, v).color(r, g, b, Mth.clamp(alpha, 0.0F, 1.0F));
+        VertexConsumer c = buffer.addVertex((float) (x - cx), (float) (y - cy), (float) (z - cz)).setUv(u, v).setColor(r, g, b, Mth.clamp(alpha, 0.0F, 1.0F));
         if (hasNormal) {
-            c.normal(nx, ny, nz);
+            c.setNormal(nx, ny, nz);
         }
-        c.endVertex();
     }
 
     public static void vertex(Vec3 p, float u, float v, int rgb, float alpha) {

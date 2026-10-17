@@ -3,7 +3,7 @@
 ## 目标与基线
 
 源版本：Minecraft 1.20.1 / Forge 47.4.23 / Java 17 / Wither Plus 0.0.1。
-目标版本：Minecraft 1.21.1 / NeoForge 21.1.233 / Java 21。
+目标版本：Minecraft 1.21.1 / NeoForge 21.1.251 / Java 21。
 保留原工程，目标分支 `1211neoforge`，目标工作树 `../1211-neoforge-WitherPlus`。
 许可证保持 All Rights Reserved。基于本机 `E:/模组/模组模板/1211-neoforge` 迁移构建环境。
 
@@ -28,3 +28,31 @@
 ## 验证状态
 
 迁移前记录；实施及测试后补充结果，不将构建成功记作游戏内验证。
+
+## 实施结果（2026-10-17）
+
+- 实际目标加载器为 NeoForge 21.1.251，Java 21，使用本机目标版本依赖源码与已有同版项目确认 API。
+- 配置改为 ModConfigSpec/ModContainer；网络改为 CustomPacketPayload + StreamCodec，保留消息编号 0..16、NBT 数据和投递范围。
+- 客户端保留原 shader，实现 RegisterGuiLayersEvent、ClientTickEvent.Post、MeshData、新顶点 API 与 Matrix4fStack 的适配。
+- 亡灵分类采用 1.21.1 原版 EntityTypeTags.UNDEAD；第三方生物需要正确声明该原版标签，不能继续依赖已移除的 MobType。
+- pack_format 改为 34；加载器元数据改为 neoforge.mods.toml；Java 21 Mixin，保留全部注入入口。
+
+### 构建与服务端
+
+`gradlew.bat build --no-daemon -Dfile.encoding=UTF-8` 已成功。
+
+独立专用服务端加载成功，外置验证器的 67 项断言全部通过，结束后正常停服存档：
+
+- 12 个技能逐个启动、运行到结束并检查清理。
+- 17 种 payload 的编码解码往返。
+- 配置生命/攻击属性、伤害倍率、击退抗性、两个百分比阶段与强制技能、阶段 NBT 写入恢复、配置禁用。
+
+验证器位于 `D:/AI临时文件/witherplus-validation/`；通过 `validation.init.gradle` 注入，只用于本地测试，不进入正式 JAR。
+日志证据：`D:/AI临时文件/witherplus-validation/server/logs/latest.log`，结果 `WITHER_VALIDATION_COMPLETE checks=67 skills=12 payloads=17`。
+此测试在真实专用服务端中加速调用技能 tick；不等于真人联网完整战斗、网络实际传输或客户端画面验证。测试服初次生成配置有原版 superflat layers 提示，不影响这些断言。
+
+### 保真审查与客户端
+
+独立只读审查确认：12 个具体技能、7 个 hazard、17 个 VFX 均保留；配置表达式一致；5 张纹理哈希一致；4 个 shader JSON 一致；7 个 GLSL 文件统一换行后内容一致。未发现通过删减功能完成迁移的情况。
+
+Render Preview 1.21.1 已加载实际模组着色器，17 个 VFX、发光层、屏幕效果共 19 个场景成功离屏捕获，采样均有非背景像素且洋红缺失纹理比例为 0。统计与拼图分别位于 `D:/AI临时文件/witherplus-preview/results-1211.json`、`contact-1211.png`。骨刺另有近景采样。静态截图不能代替真实战斗的动态镜头与全部时间点测试。

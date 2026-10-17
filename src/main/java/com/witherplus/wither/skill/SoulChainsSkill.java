@@ -50,7 +50,7 @@ public final class SoulChainsSkill extends WitherSkill {
         data.putInt("extend", EXTEND);
         data.putInt("hold", HOLD);
         this.brain.sendVfx(VfxPayload.CHAIN, data);
-        this.brain.playSound(this.wither.position(), SoundEvents.SOUL_ESCAPE, 4.0F, 0.5F);
+        this.brain.playSound(this.wither.position(), SoundEvents.SOUL_ESCAPE.value(), 4.0F, 0.5F);
         return true;
     }
 
@@ -91,7 +91,7 @@ public final class SoulChainsSkill extends WitherSkill {
                 this.sendEnd(victim, false);
                 this.brain.playSound(victim.position(), SoundEvents.CHAIN_BREAK, 2.5F, 0.4F);
             }
-            this.brain.playSound(center, SoundEvents.SOUL_ESCAPE, 5.0F, 0.4F);
+            this.brain.playSound(center, SoundEvents.SOUL_ESCAPE.value(), 5.0F, 0.4F);
             this.links.clear();
             this.finish();
         }

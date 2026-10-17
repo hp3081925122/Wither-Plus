@@ -2,7 +2,7 @@
   "required": true,
   "minVersion": "0.8",
   "package": "com.witherplus.mixin",
-  "compatibilityLevel": "JAVA_17",
+  "compatibilityLevel": "JAVA_21",
   "mixins": [
     "WitherBossMixin"
   ],
@@ -11,6 +11,5 @@
   ],
   "injectors": {
     "defaultRequire": 1
-  },
-  "refmap": "witherplus.refmap.json"
+  }
 }

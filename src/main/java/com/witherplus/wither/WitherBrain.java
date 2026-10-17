@@ -309,7 +309,7 @@ public final class WitherBrain {
         if (entity instanceof Player) {
             return true;
         }
-        return entity == this.wither.getTarget() || entity.getMobType() != net.minecraft.world.entity.MobType.UNDEAD;
+        return entity == this.wither.getTarget() || !entity.getType().is(net.minecraft.tags.EntityTypeTags.UNDEAD);
     }
 
     public double groundY(double x, double z, double fallback) {

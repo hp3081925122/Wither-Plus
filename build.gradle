@@ -1,15 +1,18 @@
-buildscript {
-    repositories { maven { url = 'https://repo.spongepowered.org/repository/maven-public/' }; mavenCentral() }
-    dependencies { classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT' }
-}
+// 当前文件只保留最小的 NeoForge 开发、构建和运行配置。
 plugins {
+    id 'java-library'
     id 'eclipse'
     id 'idea'
     id 'maven-publish'
-    id 'net.minecraftforge.gradle' version '[6.0,6.2)'
+    id 'net.neoforged.gradle.userdev' version '7.1.37'
 }
 
+version = project.mod_version
+group = project.mod_group_id
+
 repositories {
+    mavenLocal()
+    maven { url = 'https://maven.neoforged.net/releases' }
     maven {
         url = 'https://www.cursemaven.com'
         content {
@@ -18,74 +21,51 @@ repositories {
     }
 }
 
-apply plugin: 'org.spongepowered.mixin'
-
-version = project.mod_version
-group = project.mod_group_id
-
 base {
-    archivesName = "${project.mod_id}-${project.minecraft_version}-forge"
+    archivesName = "${project.mod_id}-${project.minecraft_version}-neoforge"
 }
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 
-minecraft {
-    mappings channel: project.mapping_channel, version: project.mapping_version
-    copyIdeResources = true
+runs {
+    configureEach {
+        systemProperty 'forge.logging.markers', 'REGISTRIES'
+        systemProperty 'forge.logging.console.level', 'debug'
+        modSource project.sourceSets.main
+    }
 
-    runs {
-        configureEach {
-            workingDirectory project.file('run')
-            property 'forge.logging.markers', 'REGISTRIES'
-            property 'forge.logging.console.level', 'debug'
+    client {
+        systemProperty 'forge.enabledGameTestNamespaces', project.mod_id
+    }
 
-            mods {
-                "${project.mod_id}" {
-                    source sourceSets.main
-                }
-            }
-        }
+    server {
+        systemProperty 'forge.enabledGameTestNamespaces', project.mod_id
+        programArgument '--nogui'
+    }
 
-        client {
-            property 'forge.enabledGameTestNamespaces', project.mod_id
-        }
+    gameTestServer {
+        systemProperty 'forge.enabledGameTestNamespaces', project.mod_id
+    }
 
-        server {
-            args '--nogui'
-        }
-
-        gameTestServer {
-            property 'forge.enabledGameTestNamespaces', project.mod_id
-        }
-
-        data {
-            workingDirectory project.file('run-data')
-            args '--mod', project.mod_id, '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
-        }
+    data {
+        programArguments.addAll '--mod', project.mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
     }
 }
 
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
-mixin {
-    add sourceSets.main, "witherplus.refmap.json"
-    config "witherplus.mixins.json"
-}
-
 dependencies {
-    annotationProcessor "org.spongepowered:mixin:0.8.5:processor"
-    minecraft "net.minecraftforge:forge:${project.minecraft_version}-${project.forge_version}"
+    implementation "net.neoforged:neoforge:${project.neo_version}"
 }
 
-def metadataProperties = new Properties()
-file('gradle.properties').withReader('UTF-8') { metadataProperties.load(it) }
-
-tasks.named('processResources', ProcessResources).configure {
+tasks.withType(ProcessResources).configureEach {
+    def metadataProperties = new Properties()
+    file('gradle.properties').withReader('UTF-8') { metadataProperties.load(it) }
     def replaceProperties = [
             minecraft_version: project.minecraft_version,
             minecraft_version_range: project.minecraft_version_range,
-            forge_version: project.forge_version,
-            forge_version_range: project.forge_version_range,
+            neo_version: project.neo_version,
+            neo_version_range: project.neo_version_range,
             loader_version_range: project.loader_version_range,
             mod_id: project.mod_id,
             mod_name: project.mod_name,
@@ -96,35 +76,20 @@ tasks.named('processResources', ProcessResources).configure {
     ]
     inputs.properties replaceProperties
 
-    filesMatching(['META-INF/mods.toml', 'pack.mcmeta']) {
-        expand replaceProperties + [project: project]
+    filesMatching(['META-INF/neoforge.mods.toml', 'pack.mcmeta']) {
+        expand replaceProperties
     }
-}
-
-tasks.named('jar', Jar).configure {
-    manifest {
-        attributes([
-                'MixinConfigs': 'witherplus.mixins.json',
-                'Specification-Title': project.mod_id,
-                'Specification-Vendor': project.mod_authors,
-                'Specification-Version': '1',
-                'Implementation-Title': project.name,
-                'Implementation-Version': project.jar.archiveVersion,
-                'Implementation-Vendor': project.mod_authors
-        ])
-    }
-    finalizedBy 'reobfJar'
 }
 
 publishing {
     publications {
         register('mavenJava', MavenPublication) {
-            artifact jar
+            from components.java
         }
     }
     repositories {
         maven {
-            url "file://${project.projectDir}/mcmodsrepo"
+            url "file://${project.projectDir}/repo"
         }
     }
 }

@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraftforge.client.event.RenderLevelStageEvent;
+import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import org.joml.Matrix4f;
 
 public final class VfxManager {
@@ -78,22 +78,22 @@ public final class VfxManager {
 
     public static void render(RenderLevelStageEvent event) {
         if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_WEATHER) {
-            WORLD_VIEW.set(event.getPoseStack().last().pose());
+            WORLD_VIEW.set(event.getModelViewMatrix());
             worldViewReady = true;
             return;
         }
         if (event.getStage() != RenderLevelStageEvent.Stage.AFTER_LEVEL || INSTANCES.isEmpty() || !worldViewReady) {
             return;
         }
-        float partialTick = event.getPartialTick();
+        float partialTick = event.getPartialTick().getGameTimeDeltaPartialTick(false);
         if (WpConfig.DEBUG_LOGGING.get() && !renderLogged) {
             renderLogged = true;
             WitherPlus.LOGGER.info("Wither VFX render active: instances={}, flameShader={}, groundShader={}", INSTANCES.size(), WpShaders.flame != null, WpShaders.ground != null);
         }
         Draw.setup(event.getCamera());
-        PoseStack stack = RenderSystem.getModelViewStack();
-        stack.pushPose();
-        stack.mulPoseMatrix(WORLD_VIEW);
+        org.joml.Matrix4fStack stack = RenderSystem.getModelViewStack();
+        stack.pushMatrix();
+        stack.mul(WORLD_VIEW);
         RenderSystem.applyModelViewMatrix();
         RenderSystem.enableBlend();
         RenderSystem.enableDepthTest();
@@ -106,7 +106,7 @@ public final class VfxManager {
         RenderSystem.depthMask(true);
         RenderSystem.defaultBlendFunc();
         RenderSystem.disableBlend();
-        stack.popPose();
+        stack.popMatrix();
         RenderSystem.applyModelViewMatrix();
     }
 }

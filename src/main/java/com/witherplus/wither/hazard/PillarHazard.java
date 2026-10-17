@@ -38,7 +38,7 @@ public final class PillarHazard extends Hazard {
                 WitherBrain.push(victim, 0.0, 0.6, 0.0);
             }
         }
-        level.playSound(null, this.pos.x, this.pos.y, this.pos.z, SoundEvents.SOUL_ESCAPE, SoundSource.HOSTILE, 3.0F, 0.6F);
+        level.playSound(null, this.pos.x, this.pos.y, this.pos.z, SoundEvents.SOUL_ESCAPE.value(), SoundSource.HOSTILE, 3.0F, 0.6F);
         level.playSound(null, this.pos.x, this.pos.y, this.pos.z, SoundEvents.FIRECHARGE_USE, SoundSource.HOSTILE, 1.5F, 0.5F);
         return false;
     }

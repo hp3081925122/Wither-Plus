@@ -50,8 +50,8 @@ public final class CheckerHazard extends Hazard {
                 WitherBrain.push(victim, 0.0, 0.7, 0.0);
             }
         }
-        level.playSound(null, this.center.x, this.center.y, this.center.z, SoundEvents.SOUL_ESCAPE, SoundSource.HOSTILE, 6.0F, 0.5F);
-        level.playSound(null, this.center.x, this.center.y, this.center.z, SoundEvents.GENERIC_EXPLODE, SoundSource.HOSTILE, 4.0F, 0.7F);
+        level.playSound(null, this.center.x, this.center.y, this.center.z, SoundEvents.SOUL_ESCAPE.value(), SoundSource.HOSTILE, 6.0F, 0.5F);
+        level.playSound(null, this.center.x, this.center.y, this.center.z, SoundEvents.GENERIC_EXPLODE.value(), SoundSource.HOSTILE, 4.0F, 0.7F);
         return false;
     }
 }

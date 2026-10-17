@@ -31,7 +31,7 @@ public final class ScorchHazard extends Hazard {
                 double dz = victim.getZ() - this.pos.z;
                 if (dx * dx + dz * dz <= this.radius * this.radius && Math.abs(victim.getY() - this.pos.y) < 2.0) {
                     brain.damage(victim, this.multiplier);
-                    victim.setSecondsOnFire(2);
+                    victim.igniteForSeconds(2);
                 }
             }
         }

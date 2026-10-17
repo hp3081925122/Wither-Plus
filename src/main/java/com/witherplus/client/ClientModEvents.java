@@ -5,12 +5,12 @@ import net.minecraft.client.model.WitherBossModel;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.boss.wither.WitherBoss;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
-import net.minecraftforge.client.event.RegisterShadersEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.neoforge.client.event.EntityRenderersEvent;
+import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
+import net.neoforged.neoforge.client.event.RegisterShadersEvent;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
 
 @EventBusSubscriber(modid = WitherPlus.MODID, value = Dist.CLIENT, bus = EventBusSubscriber.Bus.MOD)
 public final class ClientModEvents {
@@ -23,8 +23,8 @@ public final class ClientModEvents {
     }
 
     @SubscribeEvent
-    public static void onRegisterGuiLayers(RegisterGuiOverlaysEvent event) {
-        event.registerBelowAll("screen_fx", (gui, graphics, partialTick, width, height) -> ScreenFx.render(graphics, partialTick));
+    public static void onRegisterGuiLayers(RegisterGuiLayersEvent event) {
+        event.registerBelowAll(WitherPlus.id("screen_fx"), (graphics, delta) -> ScreenFx.render(graphics, delta.getGameTimeDeltaPartialTick(false)));
     }
 
     @SubscribeEvent

@@ -83,7 +83,7 @@ public final class SoulPyreSkill extends WitherSkill {
                 if (WpMath.segmentDistance(center, from, aim) < 1.5 + victim.getBbWidth() * 0.5 && this.hitTimes.getOrDefault(victim.getId(), -100) + 10 <= this.tick) {
                     this.hitTimes.put(victim.getId(), this.tick);
                     if (this.brain.damage(victim, multiplier)) {
-                        victim.setSecondsOnFire(3);
+                        victim.igniteForSeconds(3);
                     }
                 }
             }

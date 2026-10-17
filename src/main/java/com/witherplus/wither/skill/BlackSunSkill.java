@@ -65,13 +65,13 @@ public final class BlackSunSkill extends WitherSkill {
                 this.fireBolts(a);
             }
             if (a % 20 == 0) {
-                this.brain.playSound(this.sun, SoundEvents.SOUL_ESCAPE, 4.0F, 0.4F);
+                this.brain.playSound(this.sun, SoundEvents.SOUL_ESCAPE.value(), 4.0F, 0.4F);
             }
             return;
         }
         if (a - ACTIVE >= COLLAPSE) {
             Vec3 ground = this.groundBelow(new Vec3(this.sun.x, this.wither.getY(), this.sun.z));
-            this.brain.addHazard(new BlastHazard(ground.add(0.0, 1.0, 0.0), 1, 9.0, WpConfig.BLACK_SUN.damage.get(), 1.2, 0.6, SoundEvents.GENERIC_EXPLODE, 4.0F, 0.5F));
+            this.brain.addHazard(new BlastHazard(ground.add(0.0, 1.0, 0.0), 1, 9.0, WpConfig.BLACK_SUN.damage.get(), 1.2, 0.6, SoundEvents.GENERIC_EXPLODE.value(), 4.0F, 0.5F));
             this.brain.playSound(this.sun, SoundEvents.WARDEN_SONIC_BOOM, 4.0F, 0.6F);
             this.finish();
         }
