@@ -1,7 +1,10 @@
 package com.witherplus.item;
 
+import java.util.Map;
 import net.minecraft.core.Direction;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.StandingAndWallBlockItem;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 
 public class SpecialSkullItem extends StandingAndWallBlockItem {
@@ -12,5 +15,13 @@ public class SpecialSkullItem extends StandingAndWallBlockItem {
     @Override
     public String getDescriptionId() {
         return getOrCreateDescriptionId();
+    }
+
+    @Override
+    public void registerBlocks(Map<Block, Item> blockToItemMap, Item item) {
+    }
+
+    @Override
+    public void removeFromBlockToItemMap(Map<Block, Item> blockToItemMap, Item item) {
     }
 }
