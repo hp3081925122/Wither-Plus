@@ -37,6 +37,7 @@ public final class WitherBrain {
     private final List<Hazard> pending = new ArrayList<>();
     private int globalCooldown = 80;
     private boolean stageTwoReached;
+    private boolean specialSummon;
     private boolean stageThreeReached;
     @Nullable
     private WitherSkill current;
@@ -56,7 +57,11 @@ public final class WitherBrain {
     }
 
     public boolean active() {
-        return WpConfig.ENHANCE_ALL.get();
+        return WpConfig.ENHANCE_ALL.get() && (!WpConfig.REQUIRE_SPECIAL_SKULL.get() || this.specialSummon);
+    }
+
+    public void setSpecialSummon(boolean specialSummon) {
+        this.specialSummon = specialSummon;
     }
 
     public boolean busy() {
@@ -342,11 +347,13 @@ public final class WitherBrain {
 
     public void save(CompoundTag tag) {
         tag.putBoolean("WpStageTwo", this.stageTwoReached);
+        tag.putBoolean("WpSpecialSummon", this.specialSummon);
         tag.putBoolean("WpStageThree", this.stageThreeReached);
     }
 
     public void load(CompoundTag tag) {
         this.stageTwoReached = tag.getBoolean("WpStageTwo");
+        this.specialSummon = tag.getBoolean("WpSpecialSummon");
         this.stageThreeReached = tag.getBoolean("WpStageThree");
     }
 }

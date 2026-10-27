@@ -7,6 +7,7 @@ public final class WpConfig {
     public static final ForgeConfigSpec CLIENT_SPEC;
 
     public static final ForgeConfigSpec.BooleanValue ENHANCE_ALL;
+    public static final ForgeConfigSpec.BooleanValue REQUIRE_SPECIAL_SKULL;
     public static final ForgeConfigSpec.DoubleValue MAX_HEALTH;
     public static final ForgeConfigSpec.DoubleValue ATTACK_DAMAGE;
     public static final ForgeConfigSpec.DoubleValue KNOCKBACK_MULTIPLIER;
@@ -55,7 +56,8 @@ public final class WpConfig {
     static {
         ForgeConfigSpec.Builder b = new ForgeConfigSpec.Builder();
         b.comment("凋零基础属性").push("wither");
-        ENHANCE_ALL = b.comment("是否增强所有凋零；false 时恢复原版凋零").define("enhanceAll", true);
+        ENHANCE_ALL = b.comment("是否启用凋零增强；false 时恢复原版凋零").define("enhanceAll", true);
+        REQUIRE_SPECIAL_SKULL = b.comment("是否要求使用特殊凋零骷髅头召唤才启用增强；默认关闭").define("requireSpecialSkull", false);
         MAX_HEALTH = b.comment("凋零最大生命值").defineInRange("maxHealth", 600.0, 1.0, 1000000.0);
         ATTACK_DAMAGE = b.comment("凋零基础攻击力，所有技能伤害 = 基础攻击力 × 技能倍率").defineInRange("attackDamage", 12.0, 0.0, 10000.0);
         KNOCKBACK_MULTIPLIER = b.comment("击退整体倍率，实际击退还会乘以 (1 - 击退抗性)").defineInRange("knockbackMultiplier", 0.5, 0.0, 10.0);

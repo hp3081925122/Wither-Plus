@@ -2,6 +2,7 @@ package com.witherplus;
 
 import com.mojang.logging.LogUtils;
 import com.witherplus.network.WpNetwork;
+import com.witherplus.item.WpItems;
 import com.witherplus.wither.WitherBrain;
 import com.witherplus.wither.WitherBrainHolder;
 import net.minecraft.resources.ResourceLocation;
@@ -13,6 +14,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.fml.ModLoadingContext;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import org.slf4j.Logger;
@@ -26,6 +28,7 @@ public final class WitherPlus {
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, WpConfig.COMMON_SPEC);
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, WpConfig.CLIENT_SPEC);
         WpNetwork.register();
+        WpItems.register(FMLJavaModLoadingContext.get().getModEventBus());
         MinecraftForge.EVENT_BUS.addListener(this::onEntityJoin);
         MinecraftForge.EVENT_BUS.addListener(this::onStartTracking);
     }
@@ -49,6 +52,7 @@ public final class WitherPlus {
         if (event.getLevel().isClientSide() || !(event.getEntity() instanceof WitherBoss wither)) {
             return;
         }
+        SpecialSummonTracker.applyIfPending(event.getLevel(), wither);
         if (!((WitherBrainHolder) wither).wp$getBrain().active()) {
             return;
         }

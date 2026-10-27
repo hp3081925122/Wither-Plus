@@ -4,10 +4,13 @@
   "package": "com.witherplus.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "WitherBossMixin"
+    "WitherBossMixin",
+    "WitherSkullBlockMixin"
   ],
   "client": [
-    "client.EnergySwirlLayerMixin"
+    "client.CustomHeadLayerMixin",
+    "client.EnergySwirlLayerMixin",
+    "client.SkullBlockRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1
