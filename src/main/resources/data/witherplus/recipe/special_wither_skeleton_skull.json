@@ -1,0 +1,6 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["MMM", "MSM", "MMM"],
+  "key": {"M": "minecraft:magma_block", "S": "minecraft:wither_skeleton_skull"},
+  "result": {"id": "witherplus:special_wither_skeleton_skull", "count": 1}
+}
