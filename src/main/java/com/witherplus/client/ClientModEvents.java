@@ -1,10 +1,16 @@
 package com.witherplus.client;
 
+import com.google.common.reflect.TypeToken;
 import com.witherplus.WitherPlus;
+import com.witherplus.item.WpItems;
 import com.witherplus.mixin.client.LivingRendererAccessor;
+import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.WitherBossRenderer;
+import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.client.renderer.entity.state.WitherRenderState;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.boss.wither.WitherBoss;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -21,6 +27,9 @@ public final class ClientModEvents {
     @SubscribeEvent
     public static void onStateModifiers(RegisterRenderStateModifiersEvent event) {
         event.registerEntityModifier(WitherBossRenderer.class, (WitherBoss entity, WitherRenderState state) -> state.setRenderData(WitherVisualState.KEY, WitherVisualState.of(entity)));
+        event.registerEntityModifier(new TypeToken<LivingEntityRenderer<LivingEntity, LivingEntityRenderState, ?>>() {}, (LivingEntity entity, LivingEntityRenderState state) -> {
+            if (entity.getItemBySlot(EquipmentSlot.HEAD).is(WpItems.SPECIAL_WITHER_SKELETON_SKULL.get())) state.setRenderData(SpecialSkullVisuals.WORN, true);
+        });
     }
     @SubscribeEvent
     public static void onAddLayers(EntityRenderersEvent.AddLayers event) {
