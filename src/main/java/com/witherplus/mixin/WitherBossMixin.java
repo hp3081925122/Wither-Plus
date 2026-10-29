@@ -2,7 +2,10 @@ package com.witherplus.mixin;
 
 import com.witherplus.wither.WitherBrain;
 import com.witherplus.wither.WitherBrainHolder;
+import com.witherplus.WpConfig;
+import com.witherplus.WitherPlus;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
@@ -31,6 +34,20 @@ public abstract class WitherBossMixin extends Monster implements WitherBrainHold
             this.wp$brain = new WitherBrain((WitherBoss) (Object) this);
         }
         return this.wp$brain;
+    }
+
+    @Override
+    protected ResourceLocation getDefaultLootTable() {
+        if (!this.wp$getBrain().active()) {
+            return super.getDefaultLootTable();
+        }
+        String configured = WpConfig.ENHANCED_LOOT_TABLE.get();
+        ResourceLocation table = ResourceLocation.tryParse(configured);
+        if (table == null) {
+            WitherPlus.LOGGER.warn("Invalid enhanced wither loot table path '{}', using vanilla loot table", configured);
+            return super.getDefaultLootTable();
+        }
+        return table;
     }
 
     @Inject(method = "aiStep", at = @At("TAIL"))
